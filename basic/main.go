@@ -15,6 +15,7 @@ import (
 const monitoringTimes = 5
 const delay = 5 * time.Second
 const sitesFileName = "sites.txt"
+const logFileName = "log.txt"
 
 
 func main() {
@@ -119,12 +120,15 @@ func checkSite(site string) {
 		fmt.Println("Ocorreu um erro ao acessar o site", site)
 	} else if response.StatusCode == 200 {
 		fmt.Println("Site", site, "foi carregado com sucesso!")
+		registerLog(site, true)
 	} else {
 		fmt.Println("Site", site, "está com problemas. Status Code:", response.StatusCode)
+		registerLog(site, false)
 	}
 }
 
 func showLogs() {
+	readAndPrintFile(logFileName)
 }
 
 func exitProgram() {
@@ -204,7 +208,6 @@ func getSitesFromFile(fileName string) []string {
 	return sites
 }
 
-
 func readAndPrintFile(fileName string) {
 	fileBytesArray, err := ioutil.ReadFile(fileName)
 	if err != nil {
@@ -237,4 +240,35 @@ func readFileLinesWithReader(fileName string) []string {
 		}
 	}
 	return lines
+}
+
+// os.Open e os.OpenFile são funções que abrem arquivos, a segunda permite criar o arquivo caso não exista
+func registerLog(site string, online bool) {
+	const readWriteChMod os.FileMode = 0666
+	const readCreateAppendFlag = os.O_RDWR | os.O_CREATE | os.O_APPEND
+
+	file, err := os.OpenFile(logFileName, readCreateAppendFlag, readWriteChMod)
+
+	if err != nil {
+		fmt.Println("Ocorreu um erro ao abrir o arquivo", logFileName)
+		return
+	}
+
+	status := ternaryString(online, "online", "offline")
+	timeFormat := "02/01/2006 15:04:05"
+	// O pacote time possui funções para manipular datas e horas
+	// A função Now() retorna a data e hora atual e permite formata-la com o método .Format() que recebe um formato em string específico do Go
+	date := time.Now().Format(timeFormat)
+	logLine := date + " - " + status + " - " + site + "\n"
+
+	file.WriteString(logLine)
+	file.Close()
+}
+
+func ternaryString(condition bool, trueResult string, falseResult string) string {
+	if condition {
+		return trueResult
+	} else {
+		return falseResult
+	}
 }

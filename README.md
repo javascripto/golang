@@ -50,3 +50,5 @@ func main() {
 - Há uma diferença entre arrays e slices no go. A diferença é que o array tem um número definido de posições já o slice tem posições variáveis.
 - Arrays e slices possuem um tamanho que pode ser obtido com a função `len(arrayOrSlice)` e também tem uma quantidade de elementos possiveis obtidos com a função `cap(arrayOrSlice)` (capacidade).
 - Para adicionar um novo elemento em um slice, usa-se a função `append(slice, novoItem)` que retorna um novo slice sem modificar o anterior.
+- Para abrir arquivos podemos usar as funções `Open()` e `OpenFile()` do pacote `os`. A função `OpenFile()` permite criar o arquivo caso não exista.
+- O pacote `time` possui funções para manipular datas e horas. A função time.Now() retorna a data e hora atual e permite formata-la com a função `time.Now().Format()` que recebe um formato específico do Go.
