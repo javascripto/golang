@@ -1,15 +1,21 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"io"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"reflect"
+	"strings"
 	"time"
 )
 
 const monitoringTimes = 5
 const delay = 5 * time.Second
+const sitesFileName = "sites.txt"
+
 
 func main() {
 	// hello()
@@ -18,6 +24,7 @@ func main() {
 	// testMultipleReturn()
 	// whileTrue()
 	// arrayVsSlice()
+	// readAndPrintFile("sites.txt")
 	drawMenu()
 }
 
@@ -94,7 +101,7 @@ func initOption(option int) {
 }
 
 func startMonitoring() {
-	sites := getSites()
+	sites := getSitesFromFile(sitesFileName)
 	for i := 0; i < monitoringTimes; i++ {
 		for i, site := range sites {
 			fmt.Println("Testando site", i, ":", site)
@@ -107,7 +114,10 @@ func startMonitoring() {
 
 func checkSite(site string) {
 	response, err := http.Get(site)
-	if err == nil && response.StatusCode == 200 {
+
+	if err != nil {
+		fmt.Println("Ocorreu um erro ao acessar o site", site)
+	} else if response.StatusCode == 200 {
 		fmt.Println("Site", site, "foi carregado com sucesso!")
 	} else {
 		fmt.Println("Site", site, "está com problemas. Status Code:", response.StatusCode)
@@ -172,4 +182,59 @@ func arrayVsSlice() {
 	sliceFromArray := array[0:2]
 
 	fmt.Println(sliceFromArray)
+}
+
+func getSitesFromFile(fileName string) []string {
+	sites := []string {}
+
+	file, err := os.Open(fileName)
+	
+	if err != nil {
+		fmt.Println("Ocorreu um erro ao abrir o arquivo", fileName)
+		return sites
+	}
+	
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		sites = append(sites, scanner.Text())
+	}
+
+	file.Close()
+
+	return sites
+}
+
+
+func readAndPrintFile(fileName string) {
+	fileBytesArray, err := ioutil.ReadFile(fileName)
+	if err != nil {
+		fmt.Println("Ocorreu um erro ao abrir o arquivo", fileName)
+		return
+	}
+	fileContent := string(fileBytesArray)
+
+	fmt.Println(fileContent)
+}
+
+func readFileLinesWithReader(fileName string) []string {
+	lines := []string {}
+	file, err := os.Open(fileName)
+
+	if err != nil {
+		fmt.Println("Ocorreu um erro ao abrir o arquivo", fileName)
+		file.Close()
+		return lines
+	}
+
+	reader := bufio.NewReader(file)
+	for {
+		line, err := reader.ReadString('\n')
+		line = strings.TrimSpace(line)
+		lines = append(lines, line)
+		if err == io.EOF {
+			file.Close()
+			break
+		}
+	}
+	return lines
 }
