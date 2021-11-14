@@ -52,3 +52,9 @@ func main() {
 - Para adicionar um novo elemento em um slice, usa-se a função `append(slice, novoItem)` que retorna um novo slice sem modificar o anterior.
 - Para abrir arquivos podemos usar as funções `Open()` e `OpenFile()` do pacote `os`. A função `OpenFile()` permite criar o arquivo caso não exista.
 - O pacote `time` possui funções para manipular datas e horas. A função time.Now() retorna a data e hora atual e permite formata-la com a função `time.Now().Format()` que recebe um formato específico do Go.
+
+# Orientação a Objetos
+
+- Structs inicializadas sem informar valor para as propriedades possuem um valor padrão. para numeros o valor é 0, para strings é uma string vazia, booleanos com false, e structs {}. No Go existe um valor para representar valor nulo (nil) mas propriedades de structs nao inciam como nil.
+- Para inicializar uma struct já informando valores, os argumentos poder ser sequenciais ou nomeados. Ex: Person{"john", 20} ou Person{name:"john", age:20}.
+- Para atribuir o valor a uma variavel ela deve apontar para um tipo definido. Exemplo: `var s *string = nil` 
