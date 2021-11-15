@@ -9,6 +9,7 @@ func main() {
 	// constructStructure()
 	// withdrawExample()
 	// depositExample()
+	// transferExample()
 }
 
 func constructStructure() {
@@ -82,6 +83,16 @@ func depositExample() {
 	fmt.Println(account.balance) // 600
 }
 
+func transferExample() {
+	account1 := BankAccount{owner: "John", agency: 1, account: 1, balance: 500}
+	account2 := BankAccount{owner: "Jane", agency: 1, account: 2, balance: 500}
+
+	account1.transfer(100, &account2)
+	fmt.Println(account1.balance) // 400
+	fmt.Println(account2.balance) // 600
+	fmt.Println(account1, account2)
+}
+
 type BankAccount struct {
 	owner   string
 	agency  int
@@ -116,16 +127,28 @@ func (account BankAccount) WithdrawByValue(value float64) BankAccount {
 	return account
 }
 
-func (account *BankAccount) deposit(value float64) *DepositError {
+func (account *BankAccount) withdraw(value float64) *AccountError {
+	if value > 0 {
+		account.balance -= value
+		return nil
+	}
+	return &AccountError{"Error, you can't withdraw a negative value"}
+}
+
+func (account *BankAccount) deposit(value float64) *AccountError {
 	if value > 0 {
 		account.balance += value
 		return nil
 	}
-	return &DepositError{"Error, you can't deposit a negative value"}
+	return &AccountError{"Error, you can't deposit a negative value"}
 }
 
-type DepositError struct {
+type AccountError struct {
 	ErrMsg string
+}
+
+func (e *AccountError) Error() string {
+	return e.ErrMsg
 }
 
 // variadic arguments
@@ -136,3 +159,21 @@ func sum(numbers ...int) int {
 	}
 	return total
 }
+
+func (account *BankAccount) transfer(value float64, account2 *BankAccount) *AccountError {
+	if value > account.balance && value > 0 {
+		return &AccountError{"Error, account balance is not enough"}
+	}
+	err := account.deposit(value)
+	if err != nil {
+		return err
+	}
+	err = account2.withdraw(value)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// *pointer
+// &address
