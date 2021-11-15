@@ -3,9 +3,7 @@ package client
 import "fmt"
 
 type Client struct {
-	Name       string
-	Document   string
-	Occupation string
+	Name, Document, Occupation string
 }
 
 func (client Client) String() string {
