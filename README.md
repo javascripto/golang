@@ -66,3 +66,5 @@ func main() {
 - Para criar métodos para structs a declaração é um pouco diferente da declaração de funções. Exemplo: `func (p *Person) changeName() {}`
 - Métodos de structs tambem podem receber valores ou referencias da struct como nas funções.
 - Funções no go, assim como em outras linguagens, também podem ter argumentos variados. Exemplo: `func sum(number ...int) int {}`
+- Para criar um método toString para uma struct o método deve se chamar String e a referencia para a struct deve ser por valor e não para o ponteiro
+- Para expor métodos e propriedades publicas de um módulo eles devem começar com letra maiúscula. 
