@@ -3,11 +3,12 @@ package accounts
 import (
 	"errors"
 	"fmt"
+	"oop-bank/client"
 )
 
 type BankAccount struct {
 	Number  int
-	Owner   string
+	Owner   client.Client
 	Balance float64
 }
 
