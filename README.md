@@ -67,4 +67,5 @@ func main() {
 - Métodos de structs tambem podem receber valores ou referencias da struct como nas funções.
 - Funções no go, assim como em outras linguagens, também podem ter argumentos variados. Exemplo: `func sum(number ...int) int {}`
 - Para criar um método toString para uma struct o método deve se chamar String e a referencia para a struct deve ser por valor e não para o ponteiro
-- Para expor métodos e propriedades publicas de um módulo eles devem começar com letra maiúscula. 
+- Para expor métodos e propriedades publicas de um módulo eles devem começar com letra maiúscula.
+- No go também é possivel declarar interfaces além de structs, com isso podemos utilizar tecnicas de polimorfismo. Exemplo: `type Speaker interface { Speak() }` 
