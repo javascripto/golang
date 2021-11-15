@@ -57,4 +57,12 @@ func main() {
 
 - Structs inicializadas sem informar valor para as propriedades possuem um valor padrão. para numeros o valor é 0, para strings é uma string vazia, booleanos com false, e structs {}. No Go existe um valor para representar valor nulo (nil) mas propriedades de structs nao inciam como nil.
 - Para inicializar uma struct já informando valores, os argumentos poder ser sequenciais ou nomeados. Ex: Person{"john", 20} ou Person{name:"john", age:20}.
-- Para atribuir o valor a uma variavel ela deve apontar para um tipo definido. Exemplo: `var s *string = nil` 
+- Também é possível inicializar uma struct com a palavra new. Exemplo: `var person *Person = new(Person)` `fmt.Println(*person)`
+- Para atribuir o valor nil a uma variavel ela deve apontar para um tipo definido. Exemplo: `var s *string = nil`
+- Structs podem ser passados para funções e também possuir métodos porem existe uma diferença entre a passagem de valores e referencias.
+- Para enviar o valor de uma struct como argumento de uma função basta declarar o tipo do parametro normalmente. Exemplo: `func logPerson(p Person) {}`
+- Qualquer modificação do valor de uma struct passada como valor não tem efeito na struct original, apenas na cópia.
+- Para enviar a referencia de uma struct como argumento de uma função é necessário declarar o parametro como ponteiro. Exemplo: `func changePersonName(p *Person) {}`
+- Para criar métodos para structs a declaração é um pouco diferente da declaração de funções. Exemplo: `func (p *Person) changeName() {}`
+- Métodos de structs tambem podem receber valores ou referencias da struct como nas funções.
+- Funções no go, assim como em outras linguagens, também podem ter argumentos variados. Exemplo: `func sum(number ...int) int {}`
